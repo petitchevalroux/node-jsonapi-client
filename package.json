@@ -4,8 +4,9 @@
   "description": "Nodejs client for REST Json Api",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/mocha/bin/mocha tests",
-    "lint": "node ./node_modules/eslint/bin/eslint.js ."
+    "test": "node_modules/mocha/bin/mocha test",
+    "lint": "node ./node_modules/eslint/bin/eslint.js .",
+    "coverage": "node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec"
   },
   "repository": {
     "type": "git",
@@ -22,7 +23,9 @@
   },
   "devDependencies": {
     "eslint": "^1.10.3",
+    "istanbul": "^0.4.2",
     "mocha": "^2.4.5",
+    "mocha-istanbul": "^0.2.0",
     "sinon": "^1.17.3"
   }
 }
