@@ -1,5 +1,5 @@
 {
-  "name": "nodejs-jsonapi",
+  "name": "jsonapi-client",
   "version": "1.0.1",
   "description": "Nodejs client for REST Json Api",
   "main": "index.js",
