@@ -61,7 +61,11 @@ Client.prototype.get = function(uri, params, callback) {
         if (queryString) {
             uri += "?" + queryString;
         }
-        var request = self.restClient.get(endPoint + uri, function(data) {
+        var request = self.restClient.get(endPoint + uri, function(data, response) {
+            if (response.statusCode !== 200) {
+                callback(data);
+                return;
+            }
             callback(null, data);
         });
         self.setRequestEvents(request, callback);
@@ -84,7 +88,11 @@ Client.prototype.createResource = function(uri, resource, callback) {
                 "Content-Type": "application/json"
             }
         };
-        var request = self.restClient.post(endPoint + uri, args, function(data) {
+        var request = self.restClient.post(endPoint + uri, args, function(data, response) {
+            if (response.statusCode !== 201) {
+                callback(data);
+                return;
+            }
             callback(null, data);
         });
         self.setRequestEvents(request, callback);
@@ -104,7 +112,11 @@ Client.prototype.updateResource = function(uri, resource, callback) {
                 "Content-Type": "application/json"
             }
         };
-        var request = self.restClient.put(endPoint + uri, args, function(data) {
+        var request = self.restClient.put(endPoint + uri, args, function(data, response) {
+            if (response.statusCode !== 200) {
+                callback(data);
+                return;
+            }
             callback(null, data);
         });
         self.setRequestEvents(request, callback);
