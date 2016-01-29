@@ -3,7 +3,7 @@
 function Client() {
 
 }
-
+var qs = require("qs");
 var RestClient = require("node-rest-client").Client;
 Client.prototype.restClient = new RestClient();
 
@@ -39,19 +39,27 @@ Client.prototype.setRequestEvents = function(request, callback) {
 };
 
 Client.prototype.getResource = function(uri, callback) {
-    return this.get(uri, callback);
+    return this.get(uri, {}, callback);
 };
 
-Client.prototype.getResources = function(uri, callback) {
-    this.get(uri, callback);
+Client.prototype.getResources = function(uri, params, callback) {
+    if (!callback) {
+        callback = params;
+        params = {};
+    }
+    this.get(uri, params, callback);
 };
 
-Client.prototype.get = function(uri, callback) {
+Client.prototype.get = function(uri, params, callback) {
     var self = this;
     this.getEndPoint(function(err, endPoint) {
         if (err) {
             callback(err);
             return;
+        }
+        var queryString = qs.stringify(params);
+        if (queryString) {
+            uri += "?" + queryString;
         }
         var request = self.restClient.get(endPoint + uri, function(data) {
             callback(null, data);

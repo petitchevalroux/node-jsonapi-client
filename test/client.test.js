@@ -74,8 +74,40 @@ describe("models/client", function() {
                     "on": function() {}
                 };
             });
+
             client.setEndPoint("http://192.168.99.100:8080", function() {
                 client.getResources("/articles", function(err, articles) {
+                    assert.equal(err, null);
+                    assert.equal(articles, expectedArticles);
+                    done();
+                });
+            });
+            stubRestClientGet.restore();
+        });
+    });
+
+    describe("getResources with filters", function() {
+
+        it("return resources", function(done) {
+            var client = new Client();
+            var expectedArticles = [{
+                "id": "1",
+                "title": "sample title"
+            }];
+            var stubRestClientGet = sinon.stub(client.restClient, "get", function(url, callback) {
+                assert.equal(url, "http://192.168.99.100:8080/articles?filters%5Btitle%5D=sample%20title");
+                callback(expectedArticles);
+                return {
+                    "on": function() {}
+                };
+            });
+
+            client.setEndPoint("http://192.168.99.100:8080", function() {
+                client.getResources("/articles", {
+                    "filters": {
+                        "title": "sample title"
+                    }
+                }, function(err, articles) {
                     assert.equal(err, null);
                     assert.equal(articles, expectedArticles);
                     done();
