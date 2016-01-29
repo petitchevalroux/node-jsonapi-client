@@ -1,0 +1,31 @@
+{
+  "name": "nodejs-jsonapi",
+  "version": "1.0.0",
+  "description": "Nodejs client for REST Json Api",
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/mocha/bin/mocha test",
+    "lint": "node ./node_modules/eslint/bin/eslint.js .",
+    "coverage": "node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/petitchevalroux/nodejs-jsonapi.git).git"
+  },
+  "author": "Patrick Poulain",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/petitchevalroux/nodejs-jsonapi.git)/issues"
+  },
+  "homepage": "https://github.com/petitchevalroux/nodejs-jsonapi.git)#readme",
+  "dependencies": {
+    "node-rest-client": "^1.8.0"
+  },
+  "devDependencies": {
+    "eslint": "^1.10.3",
+    "istanbul": "^0.4.2",
+    "mocha": "^2.4.5",
+    "mocha-istanbul": "^0.2.0",
+    "sinon": "^1.17.3"
+  }
+}
