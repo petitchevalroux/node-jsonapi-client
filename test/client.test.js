@@ -43,7 +43,9 @@ describe("models/client", function() {
             };
             var stubRestClientGet = sinon.stub(client.restClient, "get", function(url, callback) {
                 assert.equal(url, "http://192.168.99.100:8080/articles/1");
-                callback(expectedArticle,{"statusCode":200});
+                callback(expectedArticle, {
+                    "statusCode": 200
+                });
                 return {
                     "on": function() {}
                 };
@@ -69,7 +71,9 @@ describe("models/client", function() {
             }];
             var stubRestClientGet = sinon.stub(client.restClient, "get", function(url, callback) {
                 assert.equal(url, "http://192.168.99.100:8080/articles");
-                callback(expectedArticles,{"statusCode":200});
+                callback(expectedArticles, {
+                    "statusCode": 200
+                });
                 return {
                     "on": function() {}
                 };
@@ -96,7 +100,9 @@ describe("models/client", function() {
             }];
             var stubRestClientGet = sinon.stub(client.restClient, "get", function(url, callback) {
                 assert.equal(url, "http://192.168.99.100:8080/articles?filters%5Btitle%5D=sample%20title");
-                callback(expectedArticles,{"statusCode":200});
+                callback(expectedArticles, {
+                    "statusCode": 200
+                });
                 return {
                     "on": function() {}
                 };
@@ -125,7 +131,9 @@ describe("models/client", function() {
             };
             var stubRestClientPost = sinon.stub(client.restClient, "post", function(url, args, callback) {
                 assert.equal(url, "http://192.168.99.100:8080/users");
-                callback(expectedUser,{"statusCode":201});
+                callback(expectedUser, {
+                    "statusCode": 201
+                });
                 return {
                     "on": function() {}
                 };
@@ -151,7 +159,9 @@ describe("models/client", function() {
             };
             var stubRestClientPut = sinon.stub(client.restClient, "put", function(url, args, callback) {
                 assert.equal(url, "http://192.168.99.100:8080/users/1");
-                callback(expectedUser,{"statusCode":200});
+                callback(expectedUser, {
+                    "statusCode": 200
+                });
                 return {
                     "on": function() {}
                 };

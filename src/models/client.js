@@ -62,17 +62,27 @@ Client.prototype.get = function(uri, params, callback) {
             uri += "?" + queryString;
         }
         var request = self.restClient.get(endPoint + uri, function(data, response) {
-            if (response.statusCode !== 200) {
-                callback(data);
-                return;
-            }
-            callback(null, data);
+            self.handleResponseStatus(200, data, response, callback);
         });
         self.setRequestEvents(request, callback);
     });
 };
 
-
+Client.prototype.handleResponseStatus = function(expectedStatus, data, response, callback) {
+    if (response.statusCode !== expectedStatus) {
+        var error;
+        if (data.error) {
+            error = new Error(data.error);
+        } else {
+            error = new Error(JSON.stringify(data));
+        }
+        error.statusCode = response.statusCode;
+        error.response = response;
+        callback(error);
+        return;
+    }
+    callback(null, data);
+};
 
 
 Client.prototype.createResource = function(uri, resource, callback) {
@@ -89,11 +99,7 @@ Client.prototype.createResource = function(uri, resource, callback) {
             }
         };
         var request = self.restClient.post(endPoint + uri, args, function(data, response) {
-            if (response.statusCode !== 201) {
-                callback(data);
-                return;
-            }
-            callback(null, data);
+            self.handleResponseStatus(201, data, response, callback);
         });
         self.setRequestEvents(request, callback);
     });
@@ -113,11 +119,8 @@ Client.prototype.updateResource = function(uri, resource, callback) {
             }
         };
         var request = self.restClient.put(endPoint + uri, args, function(data, response) {
-            if (response.statusCode !== 200) {
-                callback(data);
-                return;
-            }
-            callback(null, data);
+            self.handleResponseStatus(200, data, response, callback);
+
         });
         self.setRequestEvents(request, callback);
     });
@@ -131,11 +134,7 @@ Client.prototype.deleteResource = function(uri, callback) {
             return;
         }
         var request = self.restClient.delete(endPoint + uri, function(data, response) {
-            if (response.statusCode !== 204) {
-                callback(data);
-                return;
-            }
-            callback(null, true);
+            self.handleResponseStatus(204, data, response, callback);
         });
         self.setRequestEvents(request, callback);
     });
