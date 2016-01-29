@@ -1,6 +1,6 @@
 {
   "name": "nodejs-jsonapi",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Nodejs client for REST Json Api",
   "main": "index.js",
   "scripts": {
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/petitchevalroux/nodejs-jsonapi.git).git"
+    "url": "git+ssh://git@github.com/petitchevalroux/nodejs-jsonapi.git"
   },
   "author": "Patrick Poulain",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/petitchevalroux/nodejs-jsonapi.git)/issues"
+    "url": "https://github.com/petitchevalroux/nodejs-jsonapi/issues"
   },
-  "homepage": "https://github.com/petitchevalroux/nodejs-jsonapi.git)#readme",
+  "homepage": "https://github.com/petitchevalroux/nodejs-jsonapi/#readme",
   "dependencies": {
     "node-rest-client": "^1.8.0",
     "qs": "^6.0.2"
