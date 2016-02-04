@@ -69,19 +69,25 @@ Client.prototype.get = function(uri, params, callback) {
 };
 
 Client.prototype.handleResponseStatus = function(expectedStatus, data, response, callback) {
-    if (response.statusCode !== expectedStatus) {
-        var error;
-        if (data.error) {
-            error = new Error(data.error);
-        } else {
-            error = new Error(JSON.stringify(data));
+    var metas;
+    try {
+        if (response.statusCode !== expectedStatus) {
+            if (data.error) {
+                throw new Error(data.error);
+            } else {
+                throw new Error(JSON.stringify(data));
+            }
         }
+        if (response.headers && response.headers["x-json-api"]) {
+            metas = JSON.parse(response.headers["x-json-api"]);
+        }
+    } catch (error) {
         error.statusCode = response.statusCode;
         error.response = response;
         callback(error);
         return;
     }
-    callback(null, data);
+    callback(null, data, metas);
 };
 
 
@@ -140,5 +146,28 @@ Client.prototype.deleteResource = function(uri, callback) {
     });
 };
 
+/**
+ * Apply walkCallback function to all resources
+ * @param {string} uri
+ * @param {object} params
+ * @param {function} walkCallback function(resource) {console.log(resource)}
+ * @param {function} callback
+ * @returns {undefined}
+ */
+Client.prototype.walkResources = function(uri, params, walkCallback, callback) {
+    var self = this;
+    this.getResources(uri, params, function(err, resources, metas) {
+        if (err) {
+            callback(err);
+            return;
+        }
+        resources.forEach(walkCallback);
+        if (metas && metas.links && metas.links.next) {
+            self.walkResources(metas.links.next, {}, walkCallback, callback);
+        } else {
+            callback(null, true);
+        }
+    });
+};
 
 module.exports = Client;

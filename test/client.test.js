@@ -202,4 +202,36 @@ describe("models/client", function() {
         });
     });
 
+    describe("walkResources", function() {
+        it("walk through resources", function(done) {
+            var client = new Client();
+            var stubClientGetResources = sinon.stub(
+                client,
+                "getResources",
+                function(uri, params, callback) {
+                    var metas;
+                    if (uri === "/articles") {
+                        metas = {
+                            "links": {
+                                "next": "/articles?limit=1&offset=2"
+                            }
+                        };
+                    }
+                    callback(null, ["resource 1", "resource 2"], metas);
+                });
+            client.setEndPoint("http://192.168.99.100:8080", function() {
+                client.walkResources("/articles", {
+                    "limit": 1
+                }, function(resource) {
+                    assert(resource === "resource 1" || resource === "resource 2");
+                }, function(err, succeed) {
+                    assert.equal(err, null);
+                    assert(succeed);
+                    done();
+                });
+            });
+            stubClientGetResources.restore();
+        });
+    });
+
 });
